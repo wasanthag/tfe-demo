@@ -45,8 +45,8 @@ resource "vsphere_virtual_machine" "win2019-vm" {
   num_cpus                  = 4
   memory                    = 8192
   wait_for_guest_ip_timeout = 10
-  guest_id = "windows9Server64Guest"
-  count = var.vm_count
+  guest_id                  = "windows9Server64Guest"
+  count                     = var.vm_count
 
   network_interface {
     network_id   = data.vsphere_network.mgmt_lan.id
@@ -61,7 +61,7 @@ resource "vsphere_virtual_machine" "win2019-vm" {
 
   clone {
     template_uuid = data.vsphere_virtual_machine.win2019-template.id
- 
-}
+
+  }
 }
 
