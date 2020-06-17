@@ -1,5 +1,5 @@
-def repoName = "tf-vmw"                         //Repo to store TF code for the TFE Workspace
-def repoSshUrl = "git@github.com:wasanthag/tf-vmws.git"   //Must be ssh since we're using sshagent()
+def repoName = "tfe-demo"                         //Repo to store TF code for the TFE Workspace
+def repoSshUrl = "git@github.com:wasanthag/tfe-demo.git"   //Must be ssh since we're using sshagent()
 def tfCodeId = "example-${env.BUILD_NUMBER}"        //Unique name to use in the TF code filename and resource
 def tfCodeFilePath = "${repoName}/${tfCodeId}.tf"   //Path and filename of the new TF code file
 //Credentials
@@ -20,9 +20,9 @@ def tfeCredentials = 'tfe-token'                         //Credential ID in Jenk
         steps {
           checkout([
                  $class: 'GitSCM',
-                 branches: [[name: 'jenkins']],
+                 branches: [[name: 'master']],
                  userRemoteConfigs: [[
-                    url: 'git@github.com:wasanthag/tf-vmw',
+                    url: 'git@github.com:wasanthag/tfe-demo',
                     credentialsId: 'github-ssh',
                  ]]
                 ])
