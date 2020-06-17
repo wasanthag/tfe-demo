@@ -36,7 +36,7 @@ data "vsphere_virtual_machine" "win2019-template" {
 }
 
 resource "vsphere_virtual_machine" "win2019-vm" {
-  name             = "win2019-vm-${count.index + 1}"
+  name             = "${var.vm_prefix}-${count.index + 1}"
   resource_pool_id = data.vsphere_resource_pool.pool.id
   datastore_id     = data.vsphere_datastore.datastore.id
 
@@ -46,7 +46,7 @@ resource "vsphere_virtual_machine" "win2019-vm" {
   memory                    = 8192
   wait_for_guest_ip_timeout = 10
   guest_id = "windows9Server64Guest"
-  count = 1
+  count = var.vm_count
 
   network_interface {
     network_id   = data.vsphere_network.mgmt_lan.id
@@ -63,8 +63,5 @@ resource "vsphere_virtual_machine" "win2019-vm" {
     template_uuid = data.vsphere_virtual_machine.win2019-template.id
  
 }
-  #provisioner "local-exec" {
-    #command = "sleep 120; cp inventory hosts; sed -i 's/PUBLICIP/${vsphere_virtual_machine.win2019-vm.default_ip_address}/g' hosts;ansible-playbook -i hosts playbook.yaml -v"
-  #}
 }
 
