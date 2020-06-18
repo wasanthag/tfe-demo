@@ -49,7 +49,7 @@ def tfeCredentials = 'tfe-token'                         //Credential ID in Jenk
         echo "Do integration or deployment testing ..."
         sleep 60
         sh '''
-          check_webserver_status.sh
+          sh check_webserver_status.sh
         '''
       }
     }
