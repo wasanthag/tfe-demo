@@ -156,8 +156,14 @@
                 </SynchronousCommand>
                <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\install-iis.ps1</CommandLine>
-                    <Order>15</Order>
+                    <Order>13</Order>
                     <Description>Install IIS</Description>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>14</Order>
+                    <Description>Confirm IIS is installed</Description>
+                    <CommandLine>cmd.exe /c powershell -Command "Install-WindowsFeature -name Web-Server -IncludeManagementTools"</CommandLine>
+                    <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\enable-winrm.ps1</CommandLine>

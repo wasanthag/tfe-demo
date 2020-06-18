@@ -48,6 +48,7 @@ def tfeCredentials = 'tfe-token'                         //Credential ID in Jenk
       steps {
         echo "Do whatever integration or deployment testing you need to do..."
         sleep 60
+        shell(readFileFromWorkspace('check_webserver_status.sh'))
       }
     }
 
