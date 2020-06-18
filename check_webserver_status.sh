@@ -1,5 +1,5 @@
 #!/bin/bash
-url=`terraform output Windows_Server_Public_IP | jq '.value[0]'`
+url=`terraform output Windows_Server_Public_IP | awk -F '"' '{print $2}'`
 set -x
 attempts=5
 timeout=30
@@ -9,7 +9,7 @@ echo "Checking status of $url."
 
 for (( i=1; i<=$attempts; i++ ))
 do
-  code=`curl -sL --connect-timeout 20 --max-time 30 -w "%{http_code}\\n" "$url" -o /dev/null`
+  code=`curl -s --connect-timeout 20 --max-time 30 -w "%{http_code}\\n" "$url" -o /dev/null`
 
   echo "Found code $code for $url."
 
