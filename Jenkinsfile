@@ -46,13 +46,15 @@ def tfeCredentials = 'tfe-token'                         //Credential ID in Jenk
 
     stage('3. Do integration or deployment testing'){
       steps {
-        echo "Do whatever integration or deployment testing you need to do..."
+        echo "Do integration or deployment testing ..."
         sleep 60
-        shell(readFileFromWorkspace('check_webserver_status.sh'))
+        sh '''
+          check_webserver_status.sh
+        '''
       }
     }
 
-    stage('4. Cleanup (destroy) the test machines'){
+    stage('4. Cleanup (destroy) the test machine'){
       steps {
         withCredentials([string(credentialsId: tfeCredentials, variable: 'TOKEN')]) {
           sh """
