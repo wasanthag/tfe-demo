@@ -1,7 +1,8 @@
 #!/bin/bash
-url=`terraform output Windows_Server_Public_IP`
+url=`terraform output Windows_Server_Public_IP | jq '.value[0]'`
+set -x
 attempts=5
-timeout=5
+timeout=30
 online=false
 
 echo "Checking status of $url."
