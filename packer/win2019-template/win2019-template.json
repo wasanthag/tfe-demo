@@ -2,7 +2,7 @@
   "variables": {
     "vsphere-server": "192.168.2.110",
     "vsphere-user": "administrator@lab.local",
-    "vsphere-password": "WWTwwt1!",
+    "vsphere-password": "Sr1Lanka!",
     
     "vsphere-datacenter": "Lab",
     "vsphere-cluster": "Compute",
@@ -14,7 +14,7 @@
     "vm-cpu-num": "4",
     "vm-mem-size": "8192",
     "vm-disk-size": "40960",
-    "winadmin-password": "WWTwwt1!",
+    "winadmin-password": "Sr1Lanka!",
     "os_iso_path": "[vStorage2] iso/windows2019.iso"
   },
   
