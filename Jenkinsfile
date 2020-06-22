@@ -35,9 +35,9 @@ def tfeCredentials = 'tfe-token'                         //Credential ID in Jenk
           REPO_NAME = "${repoName}"
       }
       steps {
-       withCredentials([string(credentialsId: tfeCredentials, variable: 'TOKEN')]) {
+       withCredentials([string(credentialsId: tfeCredentials, variable: 'TOKEN'), usernamePassword(credentialsId: 'vsphere', passwordVariable: 'pass', usernameVariable: 'user')]) {
           sh '''
-            terraform init -backend-config="token=$TOKEN"  #Uses config.tf and the user API token to connect to TFE
+            terraform init -var 'vsphere_user='$user' -var 'vsphere_password='$pass' -backend-config="token=$TOKEN"  #Uses config.tf and the user API token to connect to TFE
             terraform apply
           '''
         }
