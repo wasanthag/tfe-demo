@@ -1,0 +1,56 @@
+def repoName = "tfe-demo"                         //Repo to store TF code for the TFE Workspace
+def repoSshUrl = "git@github.com:wasanthag/tfe-demo.git"   //Must be ssh since we're using sshagent()
+def tfCodeId = "example-${env.BUILD_NUMBER}"        //Unique name to use in the TF code filename and resource
+def tfCodeFilePath = "${repoName}/${tfCodeId}.tf"   //Path and filename of the new TF code file
+//Credentials
+def gitCredentials = 'github-ssh'                   //Credential ID in Jenkins of your GitHub SSH Credentials
+
+
+ pipeline {
+   agent any
+   
+   triggers {
+    githubPush()
+  }
+      
+  stages {
+      
+    stage('1. checkout') {
+        steps {
+          checkout([
+                 $class: 'GitSCM',
+                 branches: [[name: 'master']],
+                 userRemoteConfigs: [[
+                    url: 'git@github.com:wasanthag/tfe-demo',
+                    credentialsId: 'github-ssh',
+                 ]]
+                ])
+           }
+    }  
+
+   
+    stage('2. Build VMW Template'){
+      environment {
+          REPO_NAME = "${repoName}"
+      }
+      steps {
+          withVault(configuration: [timeout: 60, vaultCredentialId: 'vault-jenkins-token', vaultUrl: 'http://192.168.2.108:8200'], vaultSecrets: [[path: 'kv/secrets', secretValues: [[vaultKey: 'vsphere_user'], [vaultKey: 'vsphere_password']]]]) {
+              sh '''
+               set -x
+               cd packer/win2019-template/
+               sed -i -e 's/PASSWORD/'$vsphere_password'/g' autounattend.xml
+               sed -i -e 's/PASSWORD/'$vsphere_password'/g' win2019-template.json
+               /usr/bin/packer  build win2019-template.json
+              '''
+        }
+      }
+    }
+
+   
+
+    
+
+  } //stages
+
+  
+}
